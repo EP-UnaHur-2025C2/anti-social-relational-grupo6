@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "root",
+    "password": "null",
+    "database": "database_development",
+    "dialect": "sqlite",
+    "storage": "../data/data.db"
+  },
+  "test": {
+    "username": "user",
+    "password": "user_password",
+    "database": "antisocial_db",
+    "host": "database",
+    "dialect": "mysql",
+    "port": 3306
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
