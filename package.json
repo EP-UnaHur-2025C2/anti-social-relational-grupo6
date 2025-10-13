@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "sequelize-cli db:migrate --config db/config/config.json --migrations-path db/migrations --models-path db/models",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo --config db/config/config.json --migrations-path db/migrations --models-path db/models",
+    "db:seed": "sequelize-cli db:seed:all --config db/config/config.json --seeders-path db/seeders",
+    "db:seed:undo": "sequelize-cli db:seed:undo:all --config db/config/config.json --seeders-path db/seeders"
   },
   "author": "Gerardo Gonzalez Tulian",
   "license": "MIT",
@@ -17,6 +21,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "joi": "^18.0.1",
+    "mysql2": "^3.11.5",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   }

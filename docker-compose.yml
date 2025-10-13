@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: mysql_database
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password #
+      MYSQL_DATABASE: antisocial_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+
+  cliente:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_client
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8082:80"
+    depends_on:
+      - database
+    restart: always
+
+  app:
+    build: .
+    container_name: node_app_container
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+    depends_on:
+      - database
+
+    command: >
+      bash -c "npm run db:migrate && npm run dev"
+
+    environment:
+      NODE_ENV: test
+      DB_HOST: database
+      DB_USER: user
+      DB_PASSWORD: user_password
+      DB_NAME: antisocial_db
+      DB_DIALECT: mysql
+
+volumes:
+  db_data:
