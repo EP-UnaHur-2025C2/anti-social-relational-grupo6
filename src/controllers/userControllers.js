@@ -11,30 +11,21 @@ const getUsers = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
-
-
-module.exports = {
-    getUsers,
-    /*obtenerSerie,
-    crearSerie,
-=======
 const createUser = async (req, res) => {
     try {
-        const { nickName } = req.body
+        const nickName = req.body.nickName
         const user = await Users.create({
-            nickName,
+            nickName
         })
         res.status(201).json(user)
     } catch (error) {
-        res.status(500).json({ message: error.messages })
+        res.status(500).json({ messaje: error})
     }
 }
 module.exports = {
     getUsers,
     createUser,
     /*crearSerie,
->>>>>>> ifranhugo
     actualizarSerie,
     eliminarSerie*/
 }
