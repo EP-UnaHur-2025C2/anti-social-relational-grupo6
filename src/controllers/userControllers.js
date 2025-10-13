@@ -5,11 +5,23 @@ const getUsers = async (req, res) => {
         const users = await Users.findAll()
         res.status(200).json(users)
         
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({message: "Error al obtener los usuarios"})
+    } catch (e) {
+        console.error(e);
+        res.status(500).json( {message: "Error al obtener los usuarios"})
     }
 }
+
+const getUserById = async (req, res) => {
+    try{
+        const user = await Users.findByPk(req.params.id);
+        res.status(200).json(user)
+    } catch(e) {
+        console.error(e);
+        res.status(500).json({message: "Error al obtener los usuarios"})
+    }
+    }
+
+
 
 const createUser = async (req, res) => {
     try {
@@ -17,15 +29,39 @@ const createUser = async (req, res) => {
         const user = await Users.create({
             nickName
         })
-        res.status(201).json(user)
+        res.status(201).json({ mensaje: "Usuario creado"})
     } catch (error) {
         res.status(500).json({ messaje: error})
     }
 }
+
+const deleteUser =  async (req, res) => {
+    try {
+    const user = await Users.findByPk(req.params.id);
+    await user.destroy();
+    res.json({ mensaje: 'Usuario eliminado' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const updateUser = async (req, res) => {
+    try {
+    const user = await Users.findByPk(req.params.id);
+    user.nickName = req.body.nickName;
+    await user.save();
+    res.status(200).json({ mensaje: 'Usuario modificado' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
 module.exports = {
     getUsers,
     createUser,
-    /*crearSerie,
-    actualizarSerie,
-    eliminarSerie*/
+    deleteUser, 
+    getUserById,
+    updateUser,
+    
 }
