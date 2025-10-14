@@ -8,23 +8,23 @@ const createPost = async (req, res) => {
 
         const user = await Users.findOne({ where: { nickName } });
         if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
+            return res.status(404).json({ error: 'Usuario no encontrado' }); //Esto debe estar en middleware
         }
 
         const post = await Post.create({
-            userId: user.id,
+            nickName: user.nickName ,
             description,
             publishedAt: new Date()
         });
 
-        if (imageUrls && imageUrls.length > 0) {
+        if (imageUrls && imageUrls.length > 0) { //middelware
             const images = imageUrls.map(url => ({
                 postId: post.id,
                 imageUrl: url
             }));
             await Post_Images.bulkCreate(images);
         }
-        if (tags && tags.length > 0) {
+        if (tags && tags.length > 0) { //midelware
             for (const tagName of tags) {
                 const resultado = await Tag.findOrCreate({
                     where: {name: tagName}
