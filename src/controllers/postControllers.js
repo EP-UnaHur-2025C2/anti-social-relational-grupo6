@@ -1,11 +1,10 @@
-const {Tag, Post_Images,Users, Post } = require('../../db/models/index')
+const {Tag, PostImage,Users, Post } = require('../../db/models/index')
 
 
 const createPost = async (req, res) => {
     try {
         const { nickName, description, imageUrls, tags } = req.body;
         const tagsCreados = [];
-
         const user = await Users.findOne({ where: { nickName } });
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -22,7 +21,7 @@ const createPost = async (req, res) => {
                 postId: post.id,
                 imageUrl: url
             }));
-            await Post_Images.bulkCreate(images);
+            await PostImage.bulkCreate(images);
         }
         if (tags && tags.length > 0) {
             for (const tagName of tags) {
