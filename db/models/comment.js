@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
       // Un comentario pertenece a un usuario
       Comment.belongsTo(models.Users, {
-        foreignKey: 'userId',
+        foreignKey: 'nickName',
         as: 'author'
       });
     }
@@ -26,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    nickName: {
+      type: DataTypes.STRING,
       allowNull: false
     }
   }, {

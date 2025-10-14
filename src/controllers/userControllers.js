@@ -13,7 +13,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     try{
-        const user = await Users.findByPk(req.params.id);
+        const user = await Users.findByPk(req.params.nickName);
         res.status(200).json(user)
     } catch(e) {
         console.error(e);
@@ -37,7 +37,7 @@ const createUser = async (req, res) => {
 
 const deleteUser =  async (req, res) => {
     try {
-    const user = await Users.findByPk(req.params.id);
+    const user = await Users.findByPk(req.params.nickName);
     await user.destroy();
     res.json({ mensaje: 'Usuario eliminado' });
   } catch (error) {
@@ -47,7 +47,7 @@ const deleteUser =  async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-    const user = await Users.findByPk(req.params.id);
+    const user = await Users.findByPk(req.params.nickName);
     user.nickName = req.body.nickName;
     await user.save();
     res.status(200).json({ mensaje: 'Usuario modificado' });

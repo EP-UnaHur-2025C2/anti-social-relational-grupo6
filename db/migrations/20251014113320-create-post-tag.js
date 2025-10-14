@@ -1,23 +1,14 @@
-'use strict';
+
+
 /** @type {import('sequelize-cli').Migration} */
+'use strict';
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Comments', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      body: {
-        type: Sequelize.TEXT
-      },
-      visible: {
-        type: Sequelize.BOOLEAN
-      },
+    await queryInterface.createTable('PostTag', {
       postId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        primaryKey: true,
         references: {
           model: 'Posts',
           key: 'id'
@@ -25,12 +16,12 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      nickName: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      tagId: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
         references: {
-          model: 'Users',
-          key: 'nickName'
+          model: 'Tags',
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
@@ -41,11 +32,13 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+  
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Comments');
+    await queryInterface.dropTable('PostTag');
   }
 };

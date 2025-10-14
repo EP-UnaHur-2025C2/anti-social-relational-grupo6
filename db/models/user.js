@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Un usuario crea muchos posts
       Users.hasMany(models.Post, {
-        foreignKey: 'userId',
+        foreignKey: 'nickName',
         as: 'posts'
       });
 
       // Un usuario escribe muchos comentarios
       Users.hasMany(models.Comment, {
-        foreignKey: 'userId',
+        foreignKey: 'nickName',
         as: 'comments'
       });
     }
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     nickName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      primaryKey: true
     }
   }, {
     sequelize,

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Un post pertenece a un usuario
       Post.belongsTo(models.Users, {
-        foreignKey: 'userId',
+        foreignKey: 'nickName',
         as: 'author'
       });
 
@@ -42,8 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    nickName: {
+      type: DataTypes.STRING,
       allowNull: false
     }
   }, {

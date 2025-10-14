@@ -13,12 +13,12 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      userId: {
-        type: Sequelize.INTEGER,
+      nickName: {
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'nickName'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
