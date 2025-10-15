@@ -1,5 +1,7 @@
-#GET http://localhost:3000/users
-
+GET http://localhost:3000/users
+### ====================================
+### CREAR POST - Simple (solo texto)
+### ====================================
 POST http://localhost:3000/users
 Content-Type: application/json
 
@@ -19,4 +21,15 @@ Content-Type: application/json
   "description": "post con urls",
   "imageUrls": ["https://picsum.photos/800/600?random=17","https://picsum.photos/800/600?random=18"],
   "tags": ["nodejs","java"]
+}
+### ====================================
+### CREAR POST - Simple (solo texto)
+### ====================================
+
+POST http://localhost:3000/posts/15/add-comment
+Content-Type: application/json
+
+{
+  "body": "commentario creado por mi 3",
+  "userId": "7"
 }
