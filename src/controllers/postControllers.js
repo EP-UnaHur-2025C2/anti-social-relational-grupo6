@@ -1,11 +1,10 @@
-const {Tag, Post_Images,Users, Post } = require('../../db/models/index')
+const {Tag,Comment, PostImage,Users, Post } = require('../../db/models/index')
 
 
 const createPost = async (req, res) => {
     try {
         const { nickName, description, imageUrls, tags } = req.body;
         const tagsCreados = [];
-
         const user = await Users.findOne({ where: { nickName } });
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' }); //Esto debe estar en middleware
@@ -22,7 +21,7 @@ const createPost = async (req, res) => {
                 postId: post.id,
                 imageUrl: url
             }));
-            await Post_Images.bulkCreate(images);
+            await PostImage.bulkCreate(images);
         }
         if (tags && tags.length > 0) { //midelware
             for (const tagName of tags) {
@@ -43,6 +42,31 @@ const createPost = async (req, res) => {
     }
 };
 
+const addComment = async (req, res) => {
+    try {
+        const { body,userId} = req.body;
+        const postId = req.params.postId;
+        const post = await Post.findByPk(postId,{
+            include: [
+                { model: Comment, as: 'comments' }
+        ]});
+        if (!post) {
+            return res.status(404).json({ error: 'Post no encontrado' });
+        }
+        const comment = await Comment.create({
+            body,
+            postId,
+            userId
+        })
+        res.status(201).json(comment);
+
+    }catch (error) {
+        console.error('Error al crear el comment:', error);
+        res.status(500).json({ error: 'Error al crear el comment' });
+
+    }
+}
 module.exports = {
-    createPost
+    createPost,
+    addComment
 }

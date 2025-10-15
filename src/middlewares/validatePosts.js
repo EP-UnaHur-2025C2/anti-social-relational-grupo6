@@ -1,6 +1,8 @@
 const Joi = require('joi')
 const createPostSchema = Joi.object({
     description: Joi.string().min(10).trim().required(),
+    imageUrls: Joi.array().min(1),
+    tags: Joi.array().min(1),
     nickName:  Joi.string().min(2).trim().required(),
 })
 const validateCreatePosts = (req, res, next) => {

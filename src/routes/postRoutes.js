@@ -4,6 +4,7 @@ const {  validateCreatePosts } = require('../middlewares/validatePosts')
 
 const router = Router()
 router.post('/',validateCreatePosts, userController.createPost)
+router.post('/:postId/add-comment', userController.addComment)
 
 
 module.exports = router

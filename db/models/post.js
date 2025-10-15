@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Un post pertenece a un usuario
       Post.belongsTo(models.Users, {
         foreignKey: 'nickName',
         as: 'author'
@@ -22,13 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'images'
       });
 
-      // Un post recibe muchos comentarios
       Post.hasMany(models.Comment, {
         foreignKey: 'postId',
         as: 'comments'
       });
 
-      // Un post tiene muchos tags (relación Many-to-Many)
       Post.belongsToMany(models.Tag, {
         through: 'PostTag',
         foreignKey: 'postId',
