@@ -9,7 +9,7 @@ servers:
     description: Servidor local
 
 paths:
-  /usuarios:
+  /users:
     get:
       summary: Obtener todos los usuarios
       responses:
@@ -21,15 +21,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Usuario'
+    post:
+      summary: Crear un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Creación del nuevo usuario exitosa
 
-  /usuarios/{nickName}:
+  /users/{nickName}:
     get:
       summary: Obtener usuario por nombre
       parameters:
         - name: nickName
           in: path
           required: true
-          description: informacion del usuario a buscar
+          description: Información del usuario a buscar
           schema:
             type: string
       responses:
@@ -40,11 +51,68 @@ paths:
               schema:
                 $ref: '#/components/schemas/Usuario'
     delete:
-      summary: Eliminar todos los usuarios
+      summary: Eliminar un usuario
+      parameters:
+        - name: nickName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuario eliminado exitosamente
+    put:
+      summary: Modificar datos del usuario buscado
+      parameters:
+        - name: nickName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users'
+      responses:
+        '204':
+          description: Datos modificados exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+
+  /post:
+    get:
+      summary: Obtener todos las publicaciones
       responses:
         '200':
-          description: Todos los usuarios eliminados
+          description: Lista de publicaciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/post'
 
+  /post/{nickName}:
+  get:
+      summary: Obtener todas las publicaciones  por nombre de usuario
+      parameters:
+        - name: nickName
+          in: path
+          required: true
+          description: obtiene las 
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Publicaciones encontradas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/post'              
 
 components:
   schemas:
@@ -53,9 +121,12 @@ components:
       properties:
         nickName:
           type: string
+          example: "juan123"
         createdAt:
           type: string
           format: date-time
+          example: "2025-10-15T13:45:30Z"
         updatedAt:
           type: string
           format: date-time
+          example: "2025-10-15T14:00:00Z"
