@@ -6,4 +6,4 @@ const createUserSchema= Joi.object ({
 
 // que no ingrese valores vacios, 
 // que el nickname no este siendo usado por alguien mas
-// que este ingresando valores validos
+// que este ingresando valores validos(solo string)
