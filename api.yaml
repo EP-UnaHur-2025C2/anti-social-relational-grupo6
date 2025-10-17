@@ -9,124 +9,279 @@ servers:
     description: Servidor local
 
 paths:
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      tags: [Posts]
+      description: Devuelve una lista de todos los posts con sus autores, imágenes, comentarios recientes y tags asociados.
+      responses:
+        '200':
+          description: Lista de posts obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Crear un nuevo post
+      tags: [Posts]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostInput'
+      responses:
+        '201':
+          description: Post creado exitosamente.
+        '400':
+          description: Datos de entrada inválidos.
+        '404':
+          description: Usuario autor no encontrado.
+
+  /posts/{id}:
+    get:
+      summary: Obtener un post por su ID
+      tags: [Posts]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del post a obtener.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Datos del post obtenidos exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post no encontrado.
+    put:
+      summary: Actualizar un post existente
+      tags: [Posts]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del post a actualizar.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: "Esta es la nueva descripción del post."
+      responses:
+        '200':
+          description: Post actualizado exitosamente.
+        '404':
+          description: Post no encontrado.
+    delete:
+      summary: Eliminar un post por su ID
+      tags: [Posts]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del post a eliminar.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post eliminado exitosamente.
+        '404':
+          description: Post no encontrado.
+
+  /posts/{postId}/add-comment:
+    post:
+      summary: Añadir un comentario a un post
+      tags: [Posts]
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          description: ID del post al que se le añadirá el comentario.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  example: "¡Qué buen post!"
+                nickName:
+                  type: string
+                  example: "alice_wonder"
+      responses:
+        '201':
+          description: Comentario añadido exitosamente.
+        '404':
+          description: Post o Usuario no encontrado.
+
   /users:
     get:
       summary: Obtener todos los usuarios
+      tags: [Users]
       responses:
         '200':
-          description: Lista de usuarios
+          description: Lista de usuarios.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Usuario'
+                  $ref: '#/components/schemas/User'
     post:
       summary: Crear un nuevo usuario
+      tags: [Users]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Usuario'
+              type: object
+              properties:
+                nickName:
+                  type: string
+                  example: "nuevo_usuario"
       responses:
         '201':
-          description: Creación del nuevo usuario exitosa
+          description: Usuario creado.
+        '409':
+          description: El nickName ya está en uso.
 
   /users/{nickName}:
     get:
-      summary: Obtener usuario por nombre
+      summary: Obtener un usuario por su nickName
+      tags: [Users]
       parameters:
         - name: nickName
           in: path
           required: true
-          description: Información del usuario a buscar
           schema:
             type: string
       responses:
         '200':
-          description: Usuario encontrado
+          description: Datos del usuario.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Usuario'
-    delete:
-      summary: Eliminar un usuario
-      parameters:
-        - name: nickName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Usuario eliminado exitosamente
-    put:
-      summary: Modificar datos del usuario buscado
-      parameters:
-        - name: nickName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/users'
-      responses:
-        '204':
-          description: Datos modificados exitosamente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Usuario'
-
-  /post:
-    get:
-      summary: Obtener todos las publicaciones
-      responses:
-        '200':
-          description: Lista de publicaciones
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/post'
-
-  /post/{nickName}:
-  get:
-      summary: Obtener todas las publicaciones  por nombre de usuario
-      parameters:
-        - name: nickName
-          in: path
-          required: true
-          description: obtiene las 
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Publicaciones encontradas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/post'              
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado.
 
 components:
   schemas:
-    Usuario:
+    User:
       type: object
       properties:
         nickName:
           type: string
-          example: "juan123"
+          example: "alice_wonder"
         createdAt:
           type: string
           format: date-time
-          example: "2025-10-15T13:45:30Z"
         updatedAt:
           type: string
           format: date-time
-          example: "2025-10-15T14:00:00Z"
+    
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        body:
+          type: string
+          example: "¡Gran post!"
+        nickName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "nodejs"
+
+    PostImage:
+      type: object
+      properties:
+        id:
+          type: integer
+        imageUrl:
+          type: string
+          format: uri
+          example: "https://picsum.photos/800/600"
+          
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+          example: "Mi primer post en la red social!"
+        nickName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        author:
+          $ref: '#/components/schemas/User'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostImage'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+            
+    CreatePostInput:
+      type: object
+      required:
+        - description
+        - nickName
+      properties:
+        description:
+          type: string
+          example: "Un post sobre desarrollo web."
+        nickName:
+          type: string
+          example: "bob_builder"
+        imageUrls:
+          type: array
+          items:
+            type: string
+            format: uri
+          example: ["https://picsum.photos/800/600?random=1"]
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["nodejs", "sequelize"]

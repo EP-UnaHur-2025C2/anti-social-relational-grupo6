@@ -1,6 +1,7 @@
 const { Router } = require ('express')
 const postImageController = require('../controllers/postImageController');
 
+
 const router = Router()
 
 router.get('/by-id/:id', postImageController.getPostImage)

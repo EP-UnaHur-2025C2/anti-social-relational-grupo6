@@ -25,7 +25,13 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const nickName = req.body.nickName
+        const { nickName } = req.body;
+
+        const existingUser = await Users.findByPk(nickName);
+        if (existingUser) {
+            return res.status(409).json({ message: "El nickName ya está en uso." }); 
+        }
+
         const user = await Users.create({
             nickName
         })
@@ -38,24 +44,30 @@ const createUser = async (req, res) => {
 
 const deleteUser =  async (req, res) => {
     try {
-    const user = Users.findByPk(req.params.nickName);
-     await user.destroy();
-    res.json({ message: 'Usuario eliminado' });
-  } catch (error) {
-    console.error(e)
-    res.status(500).json({ error: error.message });
-  }
+        const user = await Users.findByPk(req.params.nickName);
+        if (!user) { 
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        await user.destroy();
+        res.json({ message: 'Usuario eliminado' });
+    } catch (error) { 
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
 };
 
 const updateUser = async (req, res) => {
     try {
-    const user = await Users.findByPk(req.params.nickName);
-    user.nickName = req.body.nickName;
-    await user.save();
-    res.status(200).json({ message: 'Usuario modificado' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+        const user = await Users.findByPk(req.params.nickName);
+        if (!user) { 
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        user.nickName = req.body.nickName;
+        await user.save();
+        res.status(200).json({ message: 'Usuario modificado' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 }
 
 
