@@ -22,7 +22,6 @@ const getPostImageByIdPost = async (req, res) => {
     }
 };
 
-
 const deletePostImage = async (req,res)=> {
     try{
         const postImage = await PostImage.findByPk(req.params.id);
@@ -35,9 +34,16 @@ const deletePostImage = async (req,res)=> {
     }
 
 }
+
 const createPostImage = async (req,res)=> {
     try{
         const { imageUrl, postId } = req.body;
+
+        const post = await Post.findByPk(postId);
+        if (!post) {
+            return res.status(404).json({ message: "El post con el ID especificado no existe." });
+        }
+        
         const postImage = PostImage.create({
             imageUrl, postId
         })
@@ -48,12 +54,18 @@ const createPostImage = async (req,res)=> {
         res.status(500).json( {message: "Error al crear la imagen"})
     }
 }
+
 const updatePostImage = async (req,res)=> {
     try {
         const postImage = await PostImage.findByPk(req.params.id);
+
+        if (!postImage) { 
+            return res.status(404).json({ message: "La imagen del post no fue encontrada." });
+        }
+
         postImage.imageUrl = req.body.imageUrl;
         await postImage.save();
-        res.status(204).json({ mensaje: 'Usuario modificado' });
+        res.status(200).json({ mensaje: 'Usuario modificado' });
   } catch (e) {
         console.error(e);
         res.status(500).json( {message: "Error al modificar la imagen"})

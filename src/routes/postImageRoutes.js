@@ -1,14 +1,19 @@
-const { Router } = require ('express')
+const { Router } = require('express');
 const postImageController = require('../controllers/postImageController');
 
+const { 
+    validateIdParam, 
+    validatePostIdParam, 
+    validateCreatePostImage, 
+    validateUpdatePostImage 
+} = require('../middlewares/validatePostImage');
 
-const router = Router()
+const router = Router();
 
-router.get('/by-id/:id', postImageController.getPostImage)
-router.get('/by-post/:postId', postImageController.getPostImageByIdPost)
-router.post('/' , postImageController.createPostImage)
-router.delete('/:id', postImageController.deletePostImage)
-router.put('/:id', postImageController.updatePostImage)
+router.get('/by-id/:id', validateIdParam, postImageController.getPostImage);
+router.get('/by-post/:postId', validatePostIdParam, postImageController.getPostImageByIdPost);
+router.post('/', validateCreatePostImage, postImageController.createPostImage);
+router.delete('/:id', validateIdParam, postImageController.deletePostImage);
+router.put('/:id', validateIdParam, validateUpdatePostImage, postImageController.updatePostImage);
 
-
-module.exports = router
+module.exports = router;
