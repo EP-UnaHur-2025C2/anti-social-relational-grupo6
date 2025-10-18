@@ -1,8 +1,13 @@
-const { Users } = require('../../db/models/index')
+const { Users } = require('../../db/models/index');
 
 const getUsers = async (req, res) => {
     try {
-        const users = await Users.findAll()
+        const users = await Users.findAll({
+            include: [
+        { model: Users, as: 'followers', through: { attributes: [] } },
+        { model: Users, as: 'following', through: { attributes: [] } }
+      ]
+});
         res.status(200).json(users)
         
     } catch (e) {
@@ -13,7 +18,17 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     try{
-        const user = await Users.findByPk(req.params.nickName);
+        const user = await Users.findByPk(req.params.nickName, 
+            {
+      include: [
+        {
+          model: Users, as: 'followers', through: { attributes: [] }
+        },
+        {
+          model: Users, as: 'following', through: { attributes: [] }
+        }
+      ]
+    });
         res.status(200).json(user)
     } catch(e) {
         console.error(e);
