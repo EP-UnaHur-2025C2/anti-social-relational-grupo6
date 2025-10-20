@@ -44,7 +44,7 @@ const createPost = async (req, res) => {
 
 const addComment = async (req, res) => {
     try {
-        const { body,userId} = req.body;
+        const { body, nickName } = req.body;
         const postId = req.params.postId;
         const post = await Post.findByPk(postId,{
             include: [
@@ -53,10 +53,16 @@ const addComment = async (req, res) => {
         if (!post) {
             return res.status(404).json({ error: 'Post no encontrado' });
         }
+
+        const user = await Users.findByPk(nickName);
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
         const comment = await Comment.create({
             body,
             postId,
-            userId
+            nickName
         })
         res.status(201).json(comment);
 
