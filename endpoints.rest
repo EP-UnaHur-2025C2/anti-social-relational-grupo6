@@ -1,62 +1,95 @@
-GET http://localhost:3000/users
 ### ====================================
-### CREAR POST - Simple (solo texto)
+### USERS - Obtener todos los usuarios
+### ====================================
+GET http://localhost:3000/users
+
+### ====================================
+### USERS - Crear un nuevo usuario
 ### ====================================
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "nickName": "danieljimenez"
+  "nickName": "camiinez"
 }
 
 ### ====================================
-### CREAR POST - Simple (solo texto)
+### USERS - Obtener un usuario por nickName
 ### ====================================
+GET http://localhost:3000/users/camiinez
 
+### ====================================
+### POSTS - Obtener todos los posts
+### ====================================
+GET http://localhost:3000/posts
+
+### ====================================
+### POSTS - Crear un nuevo post
+### ====================================
 POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "nickName": "hugoperez",
+  "nickName": "camiinez",
   "description": "post con urls",
   "imageUrls": ["https://picsum.photos/800/600?random=17","https://picsum.photos/800/600?random=18"],
   "tags": ["nodejs","java"]
 }
-### ====================================
-### CREAR POST - Simple (solo texto)
-### ====================================
 
-POST http://localhost:3000/posts/15/add-comment
+### ====================================
+### POSTS - Obtener un post por ID
+### ====================================
+GET http://localhost:3000/posts/6
+
+### ====================================
+### POSTS - Actualizar un post
+### ====================================
+PUT http://localhost:3000/posts/6
 Content-Type: application/json
 
 {
-  "body": "commentario creado por mi 3",
-  "userId": "7"
+  "description": "Nueva descripción del post actualizado"
 }
 
 ### ====================================
-### SEGUIR A UN USUARIO
+### POSTS - Eliminar un post
+### ====================================
+DELETE http://localhost:3000/posts/7
+
+### ====================================
+### POSTS - Añadir comentario a un post
+### ====================================
+POST http://localhost:3000/posts/6/add-comment
+Content-Type: application/json
+
+{
+  "body": "commentario creado por mi 1",
+  "nickName": "bob_builder"
+}
+
+### ====================================
+### FOLLOWERS - Seguir a un usuario
 ### ====================================
 POST http://localhost:3000/followers
 Content-Type: application/json
 
 {
-  "follower_nickname": "danieljimenez",
-  "followed_nickname": "hugoperez"
+  "follower_nickname": "bob_builder",
+  "followed_nickname": "camiinez"
 }
 
 ### ====================================
-### OBTENER SEGUIDORES DE UN USUARIO
+### FOLLOWERS - Obtener seguidores de un usuario
 ### ====================================
-GET http://localhost:3000/followers/juanperez
+GET http://localhost:3000/followers/camiinez
 
 ### ====================================
-### OBTENER USUARIOS QUE SIGUE UN USUARIO
+### FOLLOWERS - Obtener usuarios que sigue un usuario
 ### ====================================
-GET http://localhost:3000/followers/following/danieljimenez
+GET http://localhost:3000/followers/following/bob_builder
 
 ### ====================================
-### DEJAR DE SEGUIR A UN USUARIO
+### FOLLOWERS - Dejar de seguir a un usuario
 ### ====================================
 DELETE http://localhost:3000/followers
 Content-Type: application/json
@@ -65,3 +98,39 @@ Content-Type: application/json
   "follower_nickname": "hugoperez",
   "followed_nickname": "danieljimenez"
 }
+
+### ====================================
+### POST IMAGES - Obtener imagen por ID
+### ====================================
+GET http://localhost:3000/post-images/by-id/1
+
+### ====================================
+### POST IMAGES - Obtener imágenes de un post
+### ====================================
+GET http://localhost:3000/post-images/by-post/15
+
+### ====================================
+### POST IMAGES - Crear nueva imagen para un post
+### ====================================
+POST http://localhost:3000/post-images
+Content-Type: application/json
+
+{
+  "imageUrl": "https://picsum.photos/800/600",
+  "postId": 1
+}
+
+### ====================================
+### POST IMAGES - Actualizar imagen de un post
+### ====================================
+PUT http://localhost:3000/post-images/1
+Content-Type: application/json
+
+{
+  "imageUrl": "https://picsum.photos/800/600?random=99"
+}
+
+### ====================================
+### POST IMAGES - Eliminar imagen de un post
+### ====================================
+DELETE http://localhost:3000/post-images/1
