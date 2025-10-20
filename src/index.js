@@ -4,6 +4,7 @@ const user = require('./routes/userRoutes')
 const postRoutes = require('./routes/postRoutes');
 const postImageRoutes= require('./routes/postImageRoutes');
 const tagRoutes = require('./routes/tagRoutes');
+const followerRoutes = require('./routes/followersRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.use('/users', user)
 app.use('/posts', postRoutes)
 app.use('/tag', tagRoutes)
 app.use ('/postImage', postImageRoutes )
+app.use ('/followers', followerRoutes )
 
 
 app.listen(PORT, async () => {

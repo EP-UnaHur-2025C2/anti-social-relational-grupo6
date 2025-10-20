@@ -17,16 +17,15 @@ module.exports = (sequelize, DataTypes) => {
         as: 'comments'
       });
 
-      Users.belongsToMany(models.Users, {
-        through: 'Follower',
+      Users.belongsToMany(Users, {
+        through: models.Follower,
         as: 'followers',
         foreignKey: 'followed_nickname',
         otherKey: 'follower_nickname'
       });
 
-      // Usuarios que este usuario sigue
-      Users.belongsToMany(models.Users, {
-        through: 'Follower',
+      Users.belongsToMany(Users, {
+        through: models.Follower,
         as: 'following',
         foreignKey: 'follower_nickname',
         otherKey: 'followed_nickname'

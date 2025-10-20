@@ -6,7 +6,7 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "nickName": "hugoperez"
+  "nickName": "danieljimenez"
 }
 
 ### ====================================
@@ -32,4 +32,36 @@ Content-Type: application/json
 {
   "body": "commentario creado por mi 3",
   "userId": "7"
+}
+
+### ====================================
+### SEGUIR A UN USUARIO
+### ====================================
+POST http://localhost:3000/followers
+Content-Type: application/json
+
+{
+  "follower_nickname": "danieljimenez",
+  "followed_nickname": "hugoperez"
+}
+
+### ====================================
+### OBTENER SEGUIDORES DE UN USUARIO
+### ====================================
+GET http://localhost:3000/followers/juanperez
+
+### ====================================
+### OBTENER USUARIOS QUE SIGUE UN USUARIO
+### ====================================
+GET http://localhost:3000/followers/following/danieljimenez
+
+### ====================================
+### DEJAR DE SEGUIR A UN USUARIO
+### ====================================
+DELETE http://localhost:3000/followers
+Content-Type: application/json
+
+{
+  "follower_nickname": "hugoperez",
+  "followed_nickname": "danieljimenez"
 }

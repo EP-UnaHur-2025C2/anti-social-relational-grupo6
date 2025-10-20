@@ -14,18 +14,26 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'Users',
-          key: 'nickname'
-    }
+          key: 'nickName'
+        }
       },
       followed_nickname: {
         type: Sequelize.STRING(50),
         allowNull: false,
         references: {
           model: 'Users',
-          key: 'nickname'
+          key: 'nickName'
+        }
       },
-
-  }});
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Followers');
