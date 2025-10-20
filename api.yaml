@@ -183,6 +183,230 @@ paths:
         '404':
           description: Usuario no encontrado.
 
+  /post-images/by-id/{id}:
+    get:
+      summary: Obtener una imagen de post por su ID
+      tags: [Post Images]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la imagen a obtener.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Imagen obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostImage'
+        '500':
+          description: Error al obtener la imagen.
+
+  /post-images/by-post/{postId}:
+    get:
+      summary: Obtener todas las imágenes de un post
+      tags: [Post Images]
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          description: ID del post.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de imágenes del post.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostImage'
+        '500':
+          description: Error al obtener las imágenes del post.
+
+  /post-images:
+    post:
+      summary: Crear una nueva imagen para un post
+      tags: [Post Images]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - imageUrl
+                - postId
+              properties:
+                imageUrl:
+                  type: string
+                  format: uri
+                  example: "https://picsum.photos/800/600"
+                postId:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Imagen del post creada exitosamente.
+        '404':
+          description: El post con el ID especificado no existe.
+        '500':
+          description: Error al crear la imagen.
+
+  /post-images/{id}:
+    put:
+      summary: Actualizar una imagen de post
+      tags: [Post Images]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la imagen a actualizar.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageUrl:
+                  type: string
+                  format: uri
+                  example: "https://picsum.photos/800/600"
+      responses:
+        '200':
+          description: Imagen actualizada exitosamente.
+        '404':
+          description: La imagen del post no fue encontrada.
+        '500':
+          description: Error al modificar la imagen.
+    delete:
+      summary: Eliminar una imagen de post
+      tags: [Post Images]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la imagen a eliminar.
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Imagen eliminada exitosamente.
+        '500':
+          description: Error al eliminar la imagen del post.
+
+  /followers:
+    post:
+      summary: Seguir a un usuario
+      tags: [Followers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - follower_nickname
+                - followed_nickname
+              properties:
+                follower_nickname:
+                  type: string
+                  example: "alice_wonder"
+                followed_nickname:
+                  type: string
+                  example: "bob_builder"
+      responses:
+        '201':
+          description: Usuario seguido exitosamente.
+        '404':
+          description: El usuario seguidor o el usuario a seguir no existe.
+        '409':
+          description: Ya sigues a este usuario.
+        '500':
+          description: Error al seguir al usuario.
+    delete:
+      summary: Dejar de seguir a un usuario
+      tags: [Followers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - follower_nickname
+                - followed_nickname
+              properties:
+                follower_nickname:
+                  type: string
+                  example: "alice_wonder"
+                followed_nickname:
+                  type: string
+                  example: "bob_builder"
+      responses:
+        '200':
+          description: Dejaste de seguir al usuario exitosamente.
+        '404':
+          description: No sigues a este usuario.
+        '500':
+          description: Error al dejar de seguir al usuario.
+
+  /followers/{nickname}:
+    get:
+      summary: Obtener los seguidores de un usuario
+      tags: [Followers]
+      parameters:
+        - name: nickname
+          in: path
+          required: true
+          description: Nickname del usuario.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de seguidores obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error al obtener los seguidores.
+
+  /followers/following/{nickname}:
+    get:
+      summary: Obtener los usuarios que sigue un usuario
+      tags: [Followers]
+      parameters:
+        - name: nickname
+          in: path
+          required: true
+          description: Nickname del usuario.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de usuarios seguidos obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado.
+        '500':
+          description: Error al obtener los seguidos.
+
 components:
   schemas:
     User:
