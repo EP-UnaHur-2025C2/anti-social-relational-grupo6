@@ -16,6 +16,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'nickName',
         as: 'comments'
       });
+
+      Users.belongsToMany(Users, {
+        through: models.Follower,
+        as: 'followers',
+        foreignKey: 'followed_nickname',
+        otherKey: 'follower_nickname'
+      });
+
+      Users.belongsToMany(Users, {
+        through: models.Follower,
+        as: 'following',
+        foreignKey: 'follower_nickname',
+        otherKey: 'followed_nickname'
+      });
     }
   }
   Users.init({
@@ -27,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Users',
+    tableName: 'Users',
   });
   return Users;
 };
